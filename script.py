@@ -10,19 +10,47 @@ from github import Github   # github api access
 import json                 # for converting a dictionary to a string
 import pymongo              # for mongodb access
 
+from dotenv import load_dotenv
+load_dotenv()
+
+import os
+
 #we initialise a PyGithub Github object with our access token.
 #     note that this token is ours, and now deleted. You must 
 #     crete your own access token and use here instead. 
-g = Github("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")
+tk = os.getenv('GITHUB')
+g = Github(tk)
 
 #Let's get the user object and build a data dictionary
-usr = g.get_user(eimhincc)
+usr = g.get_user("eduardolundgren")
+repos = usr.get_repos()
 
-dct = {'user': usr.login,
-       'fullname': usr.name,
-       'location': usr.location,
-       'company': usr.company
-       }
+forks = 0
+watcherCount = 0
+size = 0
+reposWithForks =0
+avrSize =0
+linesPerFork =0
+for repo in repos:
+    watcherCount = watcherCount + repo.watchers_count;
+    if repo.fork is True:
+        reposWithForks += 1
+        forks = forks +(repo.forks_count)
+        size = size + repo.size
+
+if reposWithForks > 0:
+  avrSize = size//reposWithForks
+if forks > 0:
+  linesPerFork = size//forks
+
+dct = {
+        'user': usr.login,
+        'public_repos': usr.public_repos,
+        'total_watchers' : watcherCount,
+        'forks' : forks,
+        'avrSize' : avrSize,
+        'linesPerFork' : linesPerFork
+      }
 
 print ("dictionary is " + json.dumps(dct))
 
@@ -42,10 +70,9 @@ print ("cleaned dictionary is " + json.dumps(dct))
 # now let's store the data.
 
 # Establish connection
-conn = "mongodb://localhost:27017"
-client = pymongo.MongoClient(conn)
 
-# Create a database
-db = client.classDB
+client = pymongo.MongoClient("mongodb+srv://Test:Password1@cluster0.bg843.mongodb.net/test?retryWrites=true&w=majority")
+db = client.test
+
 
 db.githubuser.insert_many([dct])
