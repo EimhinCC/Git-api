@@ -17,18 +17,30 @@ db = client.test
 
 
 with open('data.csv', 'w') as f:
+    n=1
     f.write('User,RepoCount\n')
     dct = db.githubuser.find({'user': {'$exists': True}})
     for user in dct:
         pprint.pprint(user)
         print()
-        f.write(user['user'] + ',' + str(user['public_repos']) + '\n')
+        f.write(str(n) + ',' + str(user['public_repos']) + '\n')
+        n+=1
         
 with open('data2.csv', 'w') as f:
-    f.write('group, Watchers, LinesPerFork, AvrSize\n')
+    n=1
+    f.write('group, Watchers, MaxStars, followers\n')
     dct = db.githubuser.find({'user': {'$exists': True}})
     for user in dct:
         pprint.pprint(user)
         print()
-        f.write(user['user'] + ',' + str(user['total_watchers']) + ',' + str(user['linesPerFork'])+ ',' + str(user['avrSize']) + '\n')
+        f.write(str(n) + ',' + str(user['total_watchers']) + ',' + str(user['MaxStars'])+ ',' + str(user['followers']) + '\n')
+        n+=1
+        
+with open('data3.csv', 'w') as f:
+    f.write('Watchers,Forks\n')
+    dct = db.githubuser.find({'user': {'$exists': True}})
+    for user in dct:
+        pprint.pprint(user)
+        print()
+        f.write(str(user['total_watchers']) + ',' + str(user['forks']) + '\n')
 
