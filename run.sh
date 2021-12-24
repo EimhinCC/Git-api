@@ -1,2 +1,3 @@
-./gather.sh
-./process.sh
+.\gather.sh
+.\process.sh
+.\run-server.sh

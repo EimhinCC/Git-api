@@ -22,34 +22,32 @@ tk = os.getenv('GITHUB')
 g = Github(tk)
 
 #Let's get the user object and build a data dictionary
-usr = g.get_user("eduardolundgren")
+usr = g.get_user("jonathanong")
 repos = usr.get_repos()
 
 forks = 0
 watcherCount = 0
 size = 0
 reposWithForks =0
-avrSize =0
-linesPerFork =0
+MaxStars =0
 for repo in repos:
     watcherCount = watcherCount + repo.watchers_count;
+    if MaxStars < repo.stargazers_count:
+          MaxStars = repo.stargazers_count
     if repo.fork is True:
         reposWithForks += 1
-        forks = forks +(repo.forks_count)
-        size = size + repo.size
-
-if reposWithForks > 0:
-  avrSize = size//reposWithForks
-if forks > 0:
-  linesPerFork = size//forks
+    forks = forks +(repo.forks_count)
+    size = size + repo.size
 
 dct = {
         'user': usr.login,
         'public_repos': usr.public_repos,
+        'followers': usr.followers,
         'total_watchers' : watcherCount,
         'forks' : forks,
-        'avrSize' : avrSize,
-        'linesPerFork' : linesPerFork
+        'reposWithForks' : reposWithForks,
+        'MaxStars' : MaxStars
+
       }
 
 print ("dictionary is " + json.dumps(dct))

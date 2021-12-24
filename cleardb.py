@@ -11,10 +11,11 @@ import pprint               # for pretty printing db data
 #Let's get the user object from the db
 
 # Establish connection
-conn = "mongodb://localhost:27017"
-client = pymongo.MongoClient(conn)
+client = pymongo.MongoClient("mongodb+srv://Test:Password1@cluster0.bg843.mongodb.net/test?retryWrites=true&w=majority")
+db = client.test
+
 
 # Create a database
 db = client.classDB
 
-db.githubuser.delete_many({})
+db.githubuser.delete_many({});
