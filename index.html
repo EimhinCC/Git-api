@@ -6,7 +6,7 @@
 
 <ul>
   <li><a href="index.html">Repo Count</a></li>
-  <li><a href="forks.html">Fork Analytics</a></li>
+  <li><a href="following.html">Following Analytics</a></li>
 </ul>
 
 
@@ -46,8 +46,7 @@ svg.append("g")
   .attr("transform", "translate(0," + height + ")")
   .call(d3.axisBottom(x))
   .selectAll("text")
-    .attr("transform", "translate(-10,0)rotate(-45)")
-    .style("text-anchor", "end");
+    .style("text-anchor");
 svg.append("text")
     .attr("class", "x label")
     .attr("text-anchor", "end")
